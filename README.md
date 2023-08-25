@@ -118,6 +118,15 @@ GET /api/crds?namespace=default&resource-type=cities&resource-group=world.io&res
     }
 }
 ```
+#### Filtering
+The data can be filtered by additionally providing the following three parameters.
+
+|Parameter|Description|
+|---|---|
+|annotations|Whether to display annotation. default is false.|
+|labels|Whether to display labels. default is false.|
+|names|Object names to filter. comma separated names|
+
 
 #### Docker
 ```
@@ -131,5 +140,29 @@ kubectl apply -f deploy/
 #### Additional Roles
 ```
 kubectl apply -f deploy/rbac/
+```
+
+#### TLS
+A self-signed key/cert is provided to run k8s-read with TLS enabled.
+
+Create certificate like so
+
+```
+openssl genrsa -out private.key 2048
+openssl req -new -x509 -sha256 -key private.key -out cert.pem -days 730 -subj "/C=AU/ST=NSW/L=SYD/O=OSS/OU=IT/CN=k8s-read"
+```
+
+Update router.json to enable or disable TLS
+
+```
+  "transport": {
+    "port": 6100,
+    "tls": {
+      "enabled": true,
+      "private-key": "private.key",
+      "public-key": "cert.pem"
+    }
+  }
+
 ```
 

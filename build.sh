@@ -5,7 +5,6 @@ set -eo pipefail
 current_hash=$(git log --pretty=format:'%h' --max-count=1)
 current_branch=$(git branch --show-current|sed 's#/#_#')
 
-
 create_tag() {
     if [[ ${current_branch} == "main" ]]; 
     then
@@ -30,3 +29,4 @@ then
   docker push ${image_latest_tag}
   git push origin main --tags
 fi;
+
